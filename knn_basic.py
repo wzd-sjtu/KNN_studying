@@ -12,9 +12,12 @@ from sklearn.model_selection import train_test_split
 iris_dataset=load_iris()
 
 X, X_test, y, y_test = train_test_split(iris_dataset['data'], iris_dataset['target'], random_state=0)
-k=4
+k=3
 def KNN_studying(x_jud,X,y,k):
     tmp=X-x_jud
+    for i in range(4):
+        ma=np.max(tmp[:,i])
+        tmp[:,i]=tmp[:,i]/ma
     tmp = tmp ** 2
     tmp_x,tmp_y=np.shape(tmp)
     distance=np.cumsum(tmp,axis=1)
@@ -54,8 +57,12 @@ miss=0
 for i in range(38):
     plt.scatter(i,KNN_studying(X_test[i],X,y,k),color='red')
     plt.scatter(i,y_test[i],color='blue')
-    if y_test[i]!=KNN_studying(X_test[i],X,y,k):
+    if y_test[i]==KNN_studying(X_test[i],X,y,k):
         miss+=1
 print(miss/38)
 #plt.scatter(qq,y)
 plt.show()
+# 这里的损失率有六十几   我去。。
+#  这里的成功率不可接受
+# 当k=3时拥有81%的准确率   也并不是不可接受的
+#  因为有两种数据的特征值有所交叉，不太适合用已知的方法。。
